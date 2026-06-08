@@ -12,7 +12,7 @@ let calmCurrents = [];
 let restlness = [];
 
 function preload() {
-  data = loadTable("amob_data.csv", "csv", "header");
+  data = loadTable("amob_data.", "csv", "header");
 }
 
 function setup() {
