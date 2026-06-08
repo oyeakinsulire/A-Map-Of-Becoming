@@ -1,5 +1,5 @@
 # A Map of Becoming
-
+Live Website: https://oyeakinsulire.github.io/A-Map-Of-Becoming/
 *A Map of Becoming* is a data visualisation and sensing project exploring the transition between **Wanderer** (chaos, restlessness) and **Solace** (peace, stillness).
 
 Using data collected from a **Pulse Sensor**, **GSR Sensor**, and **Environmental Sound Sensor** through an **Arduino Uno**, the project transforms bodily and environmental conditions into generative visual landscapes.
@@ -24,12 +24,3 @@ Rather than measuring emotion directly, the project explores how physiological a
 ```text
 Sensors → Arduino → Python → CSV → Pandas → p5.js Visualisation
 ```
-
-## Running the Project
-
-1. Open the visualisation folder.
-2. Launch a local server (e.g. VS Code Live Server).
-3. Open `index.html`.
-4. Load the dataset and explore the visualisation.
-
-Developed for **UAL Creative Computing – Computational Practices: Visualisation and Sensing (IU000116)**.
