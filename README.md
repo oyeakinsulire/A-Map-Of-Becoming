@@ -1,5 +1,6 @@
 # A Map of Becoming
 Live Website: https://oyeakinsulire.github.io/A-Map-Of-Becoming/
+
 *A Map of Becoming* is a data visualisation and sensing project exploring the transition between **Wanderer** (chaos, restlessness) and **Solace** (peace, stillness).
 
 Using data collected from a **Pulse Sensor**, **GSR Sensor**, and **Environmental Sound Sensor** through an **Arduino Uno**, the project transforms bodily and environmental conditions into generative visual landscapes.
