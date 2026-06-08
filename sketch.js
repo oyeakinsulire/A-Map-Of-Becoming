@@ -10,7 +10,7 @@ let ribbons = [];
 let chaosPoints = [];
 
 function preload() {
-  data = loadTable("https://github.com/oyeakinsulire/A-Map-Of-Becoming/blob/0729c488ea00a28c7424c546ac3db44748035a65/amob_data.csv", "csv", "header"); 
+  data = loadTable("amob_data.csv", "csv", "header"); 
 }
 
 function setup() {
