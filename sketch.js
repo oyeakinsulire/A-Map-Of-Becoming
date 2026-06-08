@@ -10,7 +10,7 @@ let ribbons = [];
 let chaosPoints = [];
 
 function preload() {
-  data = loadTable("/amob_data.csv", "csv", "header"); 
+  data = loadTable("amob_data.csv", "csv", "header"); 
 }
 
 function setup() {
