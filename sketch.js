@@ -1,16 +1,18 @@
 let data;
-let emotionalState = 0;
-let targetState = 0;
+let becoming = 0;
+let destinationBecoming = 0;
 let zoff = 0;
 
 let overrideMode = false;
 let overrideState = 0;
 
-let ribbons = [];
-let chaosPoints = [];
+let started = false;
+
+let calmCurrents = [];
+let restlness = [];
 
 function preload() {
-  data = loadTable("amob_data.csv", "csv", "header"); 
+  data = loadTable("/amob_data.csv", "csv", "header");
 }
 
 function setup() {
@@ -20,7 +22,7 @@ function setup() {
   background(0);
 
   for (let i = 0; i < 70; i++) {
-    ribbons.push({
+    calmCurrents.push({
       y: random(height),
       offset: random(1000),
       thickness: random(0.5, 2),
@@ -29,26 +31,63 @@ function setup() {
   }
 
   for (let i = 0; i < 450; i++) {
-    chaosPoints.push(new ChaosPoint());
+    restlness.push(new ChaosPoint());
   }
 }
 
 function draw() {
+  if (!started) {
+    drawStartScreen();
+    return;
+  }
+
   readState();
 
-  if (emotionalState < 0.6) {
-    drawCalmOcean();
+  if (becoming < 0.6) {
+    drawStillness();
   } else {
-    drawChaosMirror();
+    drawChaos();
   }
 
   displayText();
-  zoff += emotionalState < 0.6 ? 0.002 : 0.12;
+  zoff += becoming < 0.6 ? 0.002 : 0.12;
+}
+
+function drawStartScreen() {
+  background(2, 14, 35);
+
+  noStroke();
+
+  fill(0, 90, 150, 35);
+  ellipse(width / 2, height / 2, width * 0.9, height * 0.55);
+
+  fill(70, 190, 255, 18);
+  ellipse(width * 0.35, height * 0.35, width * 0.5, height * 0.3);
+
+  textAlign(CENTER, CENTER);
+
+  fill(255);
+  textSize(160);
+  textFont("Cormorant Garamond")
+  textStyle(BOLD);
+  text("A MAP OF BECOMING", width / 2, height / 2 - 90);
+
+  textSize(60);
+  fill(210, 235, 255);
+  textFont("Cormorant Garamond")
+  text( "An exploration of the space between\nrestlessness and tranquility.", width / 2, height / 2 + 80);
+
+  textSize(40);
+  fill(150, 215, 255);
+  textFont("Cormorant Garamond")
+  text("Press SPACE to begin", width / 2, height / 2 + 240);
+
+  textAlign(LEFT, BASELINE);
 }
 
 function readState() {
   if (overrideMode) {
-    targetState = overrideState;
+    destinationBecoming = overrideState;
   } else {
     let rowIndex = frameCount % data.getRowCount();
     let row = data.getRow(rowIndex);
@@ -56,16 +95,16 @@ function readState() {
     let movement = row.getNum("movement");
     let sound = row.getNum("sound") / 100;
 
-    targetState = constrain((movement * 0.55) + (sound * 0.45), 0, 1);
+    //
+    destinationBecoming = constrain((movement * 0.7) + (sound * 0.3), 0, 1);
   }
 
-  emotionalState = lerp(emotionalState, targetState, 0.08);
+  becoming = lerp(becoming, destinationBecoming, 0.08);
 }
 
+// The State Of Restfulness (Calm)
 
-// CALM STATE
-
-function drawCalmOcean() {
+function drawStillness() {
   background(2, 14, 35, 30);
 
   noStroke();
@@ -77,7 +116,7 @@ function drawCalmOcean() {
 
   noFill();
 
-  for (let r of ribbons) {
+  for (let r of calmCurrents) {
     beginShape();
     stroke(90, 200, 255, 38);
     strokeWeight(r.thickness);
@@ -117,12 +156,13 @@ function drawCalmBreath() {
   }
 }
 
-//CHAOS STATE
+// The State Of Restlessness (Chaos)
 
-function drawChaosMirror() {
-  let intensity = map(emotionalState, 0.6, 1, 0, 1);
+function drawChaos() {
+  let intensity = map(becoming, 0.6, 1, 0, 1);
 
   background(0, 0, 0, 70);
+  fill 
 
   push();
   translate(width / 2, height / 2);
@@ -171,7 +211,7 @@ function drawMirroredNervousWeb(intensity) {
       scale(1, -1);
     }
 
-    for (let p of chaosPoints) {
+    for (let p of restlness) {
       p.update(intensity);
       p.show(intensity);
     }
@@ -196,7 +236,6 @@ function drawCardiacCore(intensity) {
     ellipse(0, 0, size, size);
   }
 
-  // sharp ECG rupture across centre
   stroke(255, 255);
   strokeWeight(lerp(1, 7, intensity));
 
@@ -271,41 +310,45 @@ class ChaosPoint {
   }
 }
 
-// ======================
 // UI
-// ======================
 
 function displayText() {
   noStroke();
   fill(255, 150);
   textSize(24);
+  textAlign(LEFT, BASELINE);
 
   text("A Map of Becoming", 30, 30);
 
-  let label =
-    emotionalState < 0.6
-      ? "Serenity"
-      : "Wanderer";
+  let label = becoming < 0.6 ? "Serenity" : "Wanderer";
 
   text(label, 30, 60);
-  text("state: " + nf(emotionalState, 1, 2), 30, 90);
+  text("state: " + nf(becoming, 1, 2), 30, 90);
   text("keys: 1 Solace(Calm) | 2 Wanderer(chaos) | 3 Real-Time Data", 30, 120);
 }
 
 function keyPressed() {
+  if (key === " ") {
+    started = true;
+    background(0);
+  }
+
   if (key === "1") {
+    started = true;
     overrideMode = true;
     overrideState = 0.02;
-    emotionalState = 0.02;
+    becoming = 0.02;
   }
 
   if (key === "2") {
+    started = true;
     overrideMode = true;
     overrideState = 1;
-    emotionalState = 1;
+    becoming = 1;
   }
 
-  if (key === "0") {
+  if (key === "3") {
+    started = true;
     overrideMode = false;
   }
 
@@ -313,6 +356,10 @@ function keyPressed() {
 }
 
 function mousePressed() {
+  if (!started) {
+    started = true;
+  }
+
   background(0);
 }
 
